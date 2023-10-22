@@ -1,0 +1,55 @@
+<div>
+  <h1 class="title">Lista de Usuarios</h1>
+  <table class="product-list">
+    <tr>
+      <th>Usuario</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Modifar_Role</th>
+      <th>Boton_Elminar_Usuario</th>
+    </tr>
+
+    <tbody id="products-table-body">
+      {{#each users}}
+        <tr>
+          <td> {{this.first_name}}</td>
+          <td> {{this.email}} </td>
+          <td> {{this.role}} </td>
+          <td>
+            <div>
+              <form action="/api/user/{{this._id}}" method="post">
+                <br/>
+                <button type="submit">eliminar</button>
+              </form>
+            </div></td>
+            <td>
+            <div>
+              <form action="/api/user/user/{{this._id}}" method="post">
+                <br/>
+                <button type="submit">cambiar a User</button>
+              </form>
+            </div>
+                        <div>
+              <form action="/api/user/premium/{{this._id}}" method="post">
+                <br/>
+                <button type="submit">cambiar a Premium</button>
+              </form>
+            </div>
+                        <div>
+              <form action="/api/user/admin/{{this._id}}" method="post">
+                <br/>
+                <button type="submit">cambiar a Admin</button>
+              </form>
+            </div>
+            </td>
+        </tr>
+      {{/each}}
+    </tbody>
+    
+
+  </table>
+</div>
+<style>
+  table, th, td { border: 1px solid; } .title { text-align: center; }
+  .product-list { width: 100%; }
+</style>

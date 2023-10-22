@@ -1,0 +1,66 @@
+{{#if last_name}}
+  <h1>Bienvenido {{last_name}}</h1>
+{{/if}}
+{{#if email}}
+  <h1>Bienvenido {{email}}</h1>
+{{/if}}
+{{#if age}}
+  <h1>Bienvenido {{age}}</h1>
+{{/if}}
+<a href="/carts/{{cartID}}">Ir a carrito </a>
+<div>
+  <h1 class="title">Lista de productos (En tiempo real)</h1>
+  <table class="product-list">
+    <tr>
+      <th>Título</th>
+      <th>Descripcion</th>
+      <th>Precio</th>
+      <th>Miniatura</th>
+      <th>botonelminar</th>
+      <th>agregar a carrito</th>
+    </tr>
+
+    <tbody id="products-table-body">
+      {{#each response.payload}}
+        <tr>
+          <td> {{this.title}}</td>
+          <td> {{this.description}} </td>
+          <td> {{this.price}} </td>
+          <td> <img height="72px" width="72px" src={{this.thumbnail}} /> </td>
+          <td>
+            <div>
+              <form action="/api/products/{{this._id}}" method="post">
+                <br />
+                <button type="submit">eliminar</button>
+              </form>
+            </div></td>
+          <td>
+            <div>
+              <code>{{@root.cartID}}esto es una prueba</code>
+              <form action="/api/carts/{{@root.cartID}}/products/{{this._id}}" method="post">
+                <br />
+                <button type="submit">agregar a carrito</button>
+              </form>
+            </div></td>
+        </tr>
+      {{/each}}
+    </tbody>
+
+  </table>
+</div>
+<div>
+  <form action="/api/session/logout" method="get">
+    <br />
+    <button type="submit">logout</button>
+  </form>
+</div>
+{{#if response.prevLink}}
+  <a href={{response.prevLink}}>Atras</a>
+{{/if}}
+{{#if response.nextLink}}
+  <a href={{response.nextLink}}>Siguiente</a>
+{{/if}}
+<style>
+  table, th, td { border: 1px solid; } .title { text-align: center; }
+  .product-list { width: 100%; }
+</style>

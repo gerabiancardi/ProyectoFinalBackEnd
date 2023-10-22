@@ -1,0 +1,17 @@
+<div>
+  <h1>
+    PERFIL DEL USUARIO
+  </h1>
+
+  <p>{{user._doc.first_name}}</p>
+  <p>{{user._doc.age}}</p>
+  <p>{{user._doc.email}}</p>
+
+  <div>
+    <form action="/api/session/logout" method="get">
+      <br />
+      <button type="submit">logout</button>
+    </form>
+  </div>
+
+</div>

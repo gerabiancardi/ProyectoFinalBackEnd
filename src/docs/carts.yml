@@ -1,0 +1,28 @@
+paths:
+  /api/carts/:
+    get:
+      summary: get all carts
+      tags: 
+        - Carts
+      responses:
+        "200":
+          description: get carts from db 
+        "500":
+          description: error server side 
+  /api/carts/{id}:
+    get:
+      summary: get cart by id
+      tags: 
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          description: Cart ID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: get cart by id from db 
+        "500":
+          description: error server side 

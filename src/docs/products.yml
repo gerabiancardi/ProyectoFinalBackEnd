@@ -1,0 +1,29 @@
+paths:
+  /api/products/:
+    get:
+      summary: get all products
+      tags: 
+        - Products
+      responses:
+        "200":
+          description: get paginate products from db 
+        "500":
+          description: error server side 
+  /api/products/{id}:
+    get:
+      summary: get product by id
+      tags: 
+        - Products
+      parameters:
+        - name: id
+          in: path
+          description: Product ID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: get product by id from db 
+        "500":
+          description: error server side 
+
