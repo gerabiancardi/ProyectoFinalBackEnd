@@ -15,6 +15,7 @@
       <th>Título</th>
       <th>Descripcion</th>
       <th>Precio</th>
+      <th>Stock</th>
       <th>Miniatura</th>
       <th>botonelminar</th>
       <th>agregar a carrito</th>
@@ -26,6 +27,7 @@
           <td> {{this.title}}</td>
           <td> {{this.description}} </td>
           <td> {{this.price}} </td>
+          <td> {{this.stock}} </td>
           <td> <img height="72px" width="72px" src={{this.thumbnail}} /> </td>
           <td>
             <div>
@@ -36,11 +38,15 @@
             </div></td>
           <td>
             <div>
-              <code>{{@root.cartID}}esto es una prueba</code>
-              <form action="/api/carts/{{@root.cartID}}/products/{{this._id}}" method="post">
-                <br />
-                <button type="submit">agregar a carrito</button>
-              </form>
+              {{#if this.stock}}
+                <form
+                  action="/api/carts/{{@root.cartID}}/products/{{this._id}}"
+                  method="post"
+                >
+                  <br />
+                  <button type="submit">agregar a carrito</button>
+                </form>
+              {{/if}}
             </div></td>
         </tr>
       {{/each}}

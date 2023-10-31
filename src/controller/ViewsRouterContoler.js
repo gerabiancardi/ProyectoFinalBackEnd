@@ -35,10 +35,10 @@ const getPaginateProducts = async (req, res) => {
       hasPrevPage,
       hasNextPage,
       prevLink: hasPrevPage
-        ? `http://localhost:8080/api/products?limit=${queryLimit}&page=${prevPage}`
+        ? `${API_URL}/api/products?limit=${queryLimit}&page=${prevPage}`
         : null,
       nextLink: hasNextPage
-        ? `http://localhost:8080/api/products?limit=${queryLimit}&page=${nextPage}`
+        ? `${API_URL}/api/products?limit=${queryLimit}&page=${nextPage}`
         : null,
     };
     res.render("products", {
@@ -46,7 +46,7 @@ const getPaginateProducts = async (req, res) => {
       last_name: req.session?.user?._doc.last_name,
       email: req.session?.user?._doc.email,
       age: req.session?.user?._doc.age,
-      cartID: req.session?.user._doc.cartId
+      cartID: req.session?.user._doc.cartId,
     });
   } catch (error) {
     req.logger.error(`Ocurrio un error en : ${req.originalUrl}`);
@@ -62,7 +62,8 @@ const getCartById = async (req, res) => {
     if (!cart) {
       return res.status(404).send("Carrito no encontrado");
     }
-    res.render("cart", { productos: cart.productos });
+    /*const totalPrice=cart.productos.map((p)=>p.price).reduce((a, b) => a + b, 0)*/
+    res.render("cart", { productos: cart.productos, id });
   } catch (error) {
     req.logger.error(`Ocurrio un error en : ${req.originalUrl}`);
     res.status(500).send("Error al obtener el carrito");
@@ -70,12 +71,12 @@ const getCartById = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  req.logger.error(`Ocurrio un error en : ${req.originalUrl}`)
+  req.logger.error(`Ocurrio un error en : ${req.originalUrl}`);
   res.render("login");
 };
 
 const olvideClave = async (req, res) => {
-  req.logger.error(`Ocurrio un error en : ${req.originalUrl}`)
+  req.logger.error(`Ocurrio un error en : ${req.originalUrl}`);
   res.render("cambioDeClave");
 };
 
@@ -97,10 +98,15 @@ const getProfile = async (req, res) => {
 };
 
 const renderUsers = async (req, res) => {
-  const users= await ServiceSession.getUsers()
-  res.render("users",{users});
+  const users = await ServiceSession.getUsers();
+  res.render("users", { users });
 };
 
+const finalizarCompra = async (req, res) => {
+  const cid = req.params.cid;
+  await ServiceCart.vaciarCarrito(cid);
+  res.render("compraFinalizada");
+};
 
 export {
   login,
@@ -109,6 +115,7 @@ export {
   getPaginateProducts,
   register,
   renderProduct,
-  olvideClave, 
-  renderUsers
+  olvideClave,
+  renderUsers,
+  finalizarCompra,
 };

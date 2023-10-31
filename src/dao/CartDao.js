@@ -1,13 +1,14 @@
 import cartsModel from "./models/carts.models.js";
+import productsModel from "./models/products.models.js";
 import TicketsModel from "./models/tickets.models.js";
 
 class CartDao {
   addCart = async (product) => {
-    try{
+    try {
       const newCart = await cartsModel.create(product);
       return newCart;
-    }catch(error){
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -17,8 +18,25 @@ class CartDao {
   };
 
   getCartById = async (id) => {
-    const cartDetail = await cartsModel.findById(id).lean();
-    return cartDetail;
+    try {
+      const cartDetail = await cartsModel.findById(id).lean();
+      let productos = [];
+      for (let index = 0; index < cartDetail.productos.length; index++) {
+        let producto = await productsModel.findById(
+          cartDetail.productos[index].id
+        );
+        console.log(cartDetail.productos[index].id)
+        if (producto) {
+          productos.push({
+            ...producto,
+            quantity: cartDetail.productos[index].quantity,
+          });
+        }
+      }
+      return { ...cartDetail, productos };
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   updateCartWhenProductIsNotInCart = async (cid, productId) => {
@@ -44,7 +62,6 @@ class CartDao {
       .exec();
   };
 
-
   DeleteProductInCart = async (cid, productId) => {
     return await cartsModel
       .updateOne(
@@ -58,8 +75,23 @@ class CartDao {
   };
 
   addTicket = async (amount, email, code) => {
-    const newTicket = await TicketsModel.create({amount, pucharser: email, code});
+    const newTicket = await TicketsModel.create({
+      amount,
+      pucharser: email,
+      code,
+    });
     return newTicket;
+  };
+
+  vaciarCarrito = async (cid) => {
+    const result = await cartsModel
+      .updateOne({ _id: cid }, { $set: { productos: [] } })
+      .exec();
+    if (result.nModified > 0) {
+      return "Todos los productos se han eliminado del carrito.";
+    } else {
+      return "Ningún producto se ha eliminado.";
+    }
   };
 }
 

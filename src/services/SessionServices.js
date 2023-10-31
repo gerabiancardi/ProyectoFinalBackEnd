@@ -97,7 +97,7 @@ class SessionService {
         last_name: u.last_name,
         email: u.email,
         role: u.role,
-        _id: u._id
+        _id: u._id,
       };
     });
   };

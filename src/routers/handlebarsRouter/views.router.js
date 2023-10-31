@@ -1,7 +1,7 @@
 import { Router } from "express";
 import authMdw from "../../middleware/auth.middleware.js"
 import { handlePolicies } from "../../middleware/handpolicies.middleware.js";
-import { getCartById, getPaginateProducts, getProfile, login, olvideClave, register, renderProduct, renderUsers } from "../../controller/ViewsRouterContoler.js";
+import { finalizarCompra, getCartById, getPaginateProducts, getProfile, login, olvideClave, register, renderProduct, renderUsers } from "../../controller/ViewsRouterContoler.js";
 const router =Router();
 
 router.get("/",[authMdw, handlePolicies(["USER"])],renderProduct)
@@ -20,9 +20,9 @@ router.get("/register", register);
 
 router.get("/profile", authMdw, getProfile);
 
-router.get("/users",[authMdw, handlePolicies(["ADMIN"])], renderUsers)
+router.get("/user",[authMdw, handlePolicies(["PREMIUN", "ADMIN"])], renderUsers)
 
-router.get("/compraExitosa", (req,res)=>{res.render("compraFinalizada")})
+router.get("/compraExitosa/:cid", finalizarCompra)
 
 router.get("/loggerTest", (req,res)=>{
     req.logger.debug(`Test Logger Debug`)

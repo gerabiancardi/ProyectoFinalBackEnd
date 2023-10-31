@@ -1,14 +1,16 @@
 <!-- views/cart.handlebars -->
 
 <h1>Detalle del carrito</h1>
-
 {{#each productos}}
   <div>
-    <h3>ID del producto: {{this.id}}</h3>
-    <p>Cantidad: {{this.quantity}}</p>
+    {{#if this._doc.title}}
+    <h3>Name del producto: {{this._doc.title}}</h3>
+    <p>Cantidad: {{this._doc.quantity}}</p>
+    <p>Price del producto: {{this._doc.price}}</p>
+     {{/if}}
   </div>
 {{/each}}
-
-  <div>
-    <a href="/compraExitosa">Finalizar Compra</a>
-  </div>
+<h2>Price Total: {{totalPrice}}</h2>
+<div>
+  <a href="/compraExitosa/{{id}}">Finalizar Compra</a>
+</div>

@@ -30,6 +30,13 @@ class ProductDao {
     return await productsModel.findByIdAndUpdate(id, props);
   };
 
+  /*updateProductStock = async (id) => {
+    await productsModel.findByIdAndUpdate(
+      id,
+      { $inc: { stock: -1 } },
+    )
+  };*/
+
   deleteProduct = async (id) => {
    return await productsModel.findByIdAndDelete(id);
   };

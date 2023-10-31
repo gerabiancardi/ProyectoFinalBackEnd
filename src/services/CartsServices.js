@@ -4,7 +4,7 @@ import { productDao } from "../dao/ProductDao.js";
 class CartSerivce {
   addCart = async (product) => {
     const newCart = await cartDao.addCart(product);
-    console.log(newCart, "NEWCART")
+    console.log(newCart, "NEWCART");
     return newCart;
   };
 
@@ -20,7 +20,6 @@ class CartSerivce {
 
   updateCart = async (cid, productId) => {
     const cart = await cartDao.getCartById(cid);
-
     if (!cart) {
       throw new Error("No existe el carrito");
     }
@@ -30,7 +29,6 @@ class CartSerivce {
     if (!product) {
       throw new Error("No existe el producto");
     }
-
     const existProductInCart = cart.productos.some((productCart) => {
       return productCart.id?.toString() === product.id;
     });
@@ -72,7 +70,7 @@ class CartSerivce {
     console.log(cart);
     if (cart.productos.length > 0) {
       let ticketamount = 0;
-      let productswhitoutstock= []
+      let productswhitoutstock = [];
       cart.productos.forEach(async (producto) => {
         const product = await productDao.getProductById(producto.id);
         const productbuy = producto.quantity;
@@ -81,14 +79,19 @@ class CartSerivce {
           await productDao.updateProduct(product.id, {
             stock: product.stock - productbuy,
           });
-        }else{
-         productswhitoutstock.push(product._id)
+        } else {
+          productswhitoutstock.push(product._id);
         }
       });
       const code = (Math.random() + 1).toString(36).substring(7);
       const newTicket = await cartDao.addTicket(ticketamount, user.email, code);
-      return {newTicket, productswhitoutstock};
+      return { newTicket, productswhitoutstock };
     }
+  };
+
+  vaciarCarrito = async (cid) => {
+    const result = await cartDao.vaciarCarrito(cid);
+    return result;
   };
 }
 

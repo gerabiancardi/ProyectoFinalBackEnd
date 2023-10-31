@@ -9,7 +9,7 @@ const logout = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const credentials = new CredentialsDto(req.body)
+    const credentials = new CredentialsDto(req.body);
     const findUser = await ServiceSession.login(credentials);
     if (!findUser) {
       return res
@@ -29,8 +29,15 @@ const login = async (req, res) => {
 
 const register = async (req, res) => {
   try {
-    const {role,email,password,first_name,last_name,age} = req.body;
-    const response = await ServiceSession.register({role,email,password,first_name,last_name,age})
+    const { role, email, password, first_name, last_name, age } = req.body;
+    const response = await ServiceSession.register({
+      role,
+      email,
+      password,
+      first_name,
+      last_name,
+      age,
+    });
     req.session.user = { ...response };
     return res.redirect("/login");
   } catch (error) {
@@ -45,14 +52,12 @@ const register = async (req, res) => {
 const cambioContraseña = async (req, res) => {
   try {
     const { password, email } = req.body;
-console.log(password)
-console.log(email)
-  const response = ServiceSession.cambioContraseña({ password, email})
+    console.log(password);
+    console.log(email);
+    const response = ServiceSession.cambioContraseña({ password, email });
 
     if (response?.message) {
-      return res
-        .status(401)
-        .json(response.message);
+      return res.status(401).json(response.message);
     }
     return res.redirect("/login");
   } catch (error) {
@@ -64,9 +69,9 @@ console.log(email)
   }
 };
 
-const cambiarRol= async(req, res)=>{
- return await ServiceSession.cambiarRol(req.params._id, req.params.role)
-}
+const cambiarRol = async (req, res) => {
+  return await ServiceSession.cambiarRol(req.params._id, req.params.role);
+};
 
 const gitHubCallback = async (req, res) => {
   try {
@@ -81,27 +86,25 @@ const gitHubCallback = async (req, res) => {
   }
 };
 
-const getUsers = async(req,res) =>{
-  try{
-    return await ServiceSession.getUsers()
-  } catch (error){
+const getUsers = async (req, res) => {
+  try {
+    return await ServiceSession.getUsers();
+  } catch (error) {}
+};
 
-  }}
+const deleteUsers = async (req, res) => {
+  try {
+    return await ServiceSession.deleteUsers();
+  } catch (error) {}
+};
 
-const deleteUsers = async(req,res) =>{
-    try{
-      return await ServiceSession.deleteUsers()
-    } catch (error){
-
-    }
-}
-
-const deleteUsersById = async(req,res) =>{
-  try{
-    return await ServiceSession.deleteUserById(req.params.uid)
-  } catch (error){
-console.log(error)
-  }}
+const deleteUsersById = async (req, res) => {
+  try {
+    return await ServiceSession.deleteUserById(req.params.uid);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export {
   login,
@@ -112,5 +115,5 @@ export {
   cambiarRol,
   getUsers,
   deleteUsers,
-  deleteUsersById
+  deleteUsersById,
 };

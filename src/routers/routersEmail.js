@@ -1,9 +1,8 @@
 import { Router } from "express";
-import {transporter} from "../config/email.js"
-import { EMAIL} from "../config/config.js";
+import { transporter } from "../config/email.js";
+import { EMAIL } from "../config/config.js";
 
 const router = Router();
-
 
 router.post("/recuperarClave", async (req, res) => {
   try {
@@ -14,7 +13,7 @@ router.post("/recuperarClave", async (req, res) => {
       html: `
         <div>
           <h1>Esto es un email de prueba</h1>
-          <a href="http://localhost:8080/formularioNuevaClave">Recuperar Clave<a/>
+          <a href="${API_URL}/formularioNuevaClave">Recuperar Clave<a/>
         </div>
         `,
     });

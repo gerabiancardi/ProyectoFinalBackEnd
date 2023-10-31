@@ -1,7 +1,8 @@
+import { API_URL } from "../config/config.js";
 import { HttpResponse } from "../middleware/errores.js";
 import { Serviceproduct } from "../services/ProductServices.js";
 
-const httpErrors = new HttpResponse()
+const httpErrors = new HttpResponse();
 
 const getPaginateProducts = async (req, res) => {
   try {
@@ -33,42 +34,42 @@ const getPaginateProducts = async (req, res) => {
       hasPrevPage,
       hasNextPage,
       prevLink: hasPrevPage
-        ? `http://localhost:8080/api/products?limit=${queryLimit}&page=${prevPage}`
+        ? `${API_URL}/api/products?limit=${queryLimit}&page=${prevPage}`
         : null,
       nextLink: hasNextPage
-        ? `http://localhost:8080/api/products?limit=${queryLimit}&page=${nextPage}`
+        ? `${API_URL}/api/products?limit=${queryLimit}&page=${nextPage}`
         : null,
     };
     return res.send(response);
   } catch (error) {
-    return httpErrors.Error(res, "Ocurrio un error inesperado")
+    return httpErrors.Error(res, "Ocurrio un error inesperado");
   }
 };
 
 const getProductById = async (req, res) => {
   try {
-    const pid = (req.params.pid);
+    const pid = req.params.pid;
     const result = await Serviceproduct.getProductById(pid);
     if (!result) {
       return httpErrors.NotFound(res, "Producto no encontrado");
     }
     res.send({ result });
   } catch {
-    return httpErrors.Error(res, "Ocurrio un error inesperado")
+    return httpErrors.Error(res, "Ocurrio un error inesperado");
   }
 };
 
 const addProduct = async (req, res) => {
   try {
     const product = req.body;
-    console.log(product)
+    console.log(product);
     if (Object.values(product).length == 0) {
-      return httpErrors.BadRequest(res,"Debe completar todos los campos");
+      return httpErrors.BadRequest(res, "Debe completar todos los campos");
     }
     const response = await Serviceproduct.addProduct(product);
     return res.status(201).json(response);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return httpErrors.Error(res, "Ocurrio un error inesperado");
   }
 };
@@ -83,21 +84,21 @@ const updateProduct = async (req, res) => {
     }
     return httpErrors.NotFound(res, "Producto no encontrado");
   } catch {
-    return httpErrors.Error(res, "Ocurrio un error inesperado")
+    return httpErrors.Error(res, "Ocurrio un error inesperado");
   }
 };
 
 const deleteProduct = async (req, res) => {
   try {
-    const pid = (req.params.pid);
+    const pid = req.params.pid;
     const response = await Serviceproduct.deleteProduct(pid);
     if (response) {
       return res.sendStatus(204);
     }
     return httpErrors.NotFound(res, "Producto no encontrado");
-  } catch (error){
-    console.log(error)
-    return httpErrors.Error(res, "Ocurrio un error inesperado")
+  } catch (error) {
+    console.log(error);
+    return httpErrors.Error(res, "Ocurrio un error inesperado");
   }
 };
 
