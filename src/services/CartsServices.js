@@ -29,7 +29,7 @@ class CartSerivce {
       throw new Error("No existe el producto");
     }
     const existProductInCart = cart.productos.some((productCart) => {
-      return productCart.id?.toString() === product.id;
+      return productCart.id._id?.toString() == product._id;
     });
 
     if (!existProductInCart) {
