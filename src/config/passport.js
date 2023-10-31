@@ -26,7 +26,6 @@ const initializePassport = () => {
             let newUser = await userModel.create(addNewUser);
             done(null, newUser);
           } else {
-            // ya existia el usuario
             done(null, user);
           }
         } catch (error) {

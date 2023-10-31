@@ -67,7 +67,8 @@ const gitHubCallback = async (req, res) => {
   req.logger.info("Ejectuando endpoint" + req.originalUrl);
   try {
     req.session.user = req.user;
-    res.redirect("/profile");
+    console.log(req.user)
+    res.render("profile", {user:req.user});
   } catch (error) {
     res.status(500).send({ error: "Error interno" });
   }
