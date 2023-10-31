@@ -13,7 +13,6 @@ class SessionService {
   login = async ({ email, password }) => {
     try {
       const findUser = await sessionDao.findUser({ email });
-      console.log(findUser);
       if (!findUser) {
         return false;
       }
@@ -27,10 +26,6 @@ class SessionService {
         password: "",
       };
     } catch (error) {
-      console.log(
-        "🚀 ~ file: session.routes.js:47 ~ router.post ~ error:",
-        error
-      );
       throw new Error({ error: "Error interno" });
     }
   };
@@ -42,17 +37,9 @@ class SessionService {
       const cart = await ServiceCart.addCart({ products: [] });
       const userData = { ...user, cartId: cart._id };
       const newUser = await sessionDao.addUser(userData);
-      console.log(
-        "🚀 ~ file: session.routes.js:58 ~ router.post ~ newUser:",
-        newUser
-      );
 
       return newUser;
     } catch (error) {
-      console.log(
-        "🚀 ~ file: session.routes.js:66 ~ router.post ~ error:",
-        error
-      );
       throw new Error({ error: "Error interno" });
     }
   };
@@ -73,10 +60,6 @@ class SessionService {
       }
       return true;
     } catch (error) {
-      console.log(
-        "🚀 ~ file: session.routes.js:117 ~ router.post ~ error:",
-        error
-      );
       throw new Error({ error: "Error interno" });
     }
   };

@@ -2,43 +2,75 @@ import productsModel from "./models/products.models.js";
 
 class ProductDao {
   addProduct = async (product) => {
-    const newProduct = await productsModel.create(product);
-    return newProduct;
+    try {
+      const newProduct = await productsModel.create(product);
+      return newProduct;
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   getProducts = async () => {
-    return await productsModel.find().lean();
+    try {
+      return await productsModel.find().lean();
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   getPaginateProducts = async ({ limit, page, sort, query }) => {
-    const data =await productsModel.paginate({},{ limit, page, sort:sort, lean: true})
-    return data;
+    try {
+      const data =await productsModel.paginate({},{ limit, page, sort:sort, lean: true})
+      return data;
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   getProductById = async (id) => {
-    const productDetail = await productsModel.findById(id).lean();
-    return productDetail;
+    try {
+      const productDetail = await productsModel.findById(id).lean();
+      return productDetail;
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   getProductByCode = async (code) => {
-   return await productsModel.findOne({
-      code
-    });
+    try {
+      return await productsModel.findOne({
+        code
+      });
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   updateProduct = async (id, props) => {
-    return await productsModel.findByIdAndUpdate(id, props);
+    try {
+      return await productsModel.findByIdAndUpdate(id, props);
+    } catch (error) {
+      console.log(error)
+    }
   };
 
-  /*updateProductStock = async (id) => {
-    await productsModel.findByIdAndUpdate(
-      id,
-      { $inc: { stock: -1 } },
-    )
-  };*/
+  updateProductStock = async (id) => {
+    try {
+      await productsModel.findByIdAndUpdate(
+        id,
+        { $inc: { stock: -1 } },
+      )
+    } catch (error) {
+      console.log(error)
+    }
+  };
 
   deleteProduct = async (id) => {
-   return await productsModel.findByIdAndDelete(id);
+    try {
+      return await productsModel.findByIdAndDelete(id);
+    } catch (error) {
+      console.log(error)
+    }
   };
 }
 

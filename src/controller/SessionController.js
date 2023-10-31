@@ -2,12 +2,14 @@ import CredentialsDto from "../dto/credentialsDto.js";
 import { ServiceSession } from "../services/SessionServices.js";
 
 const logout = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl);
   const response = ServiceSession.logout(req.session);
   if (response) return res.redirect("/login");
   return res.send({ message: `logout Error`, body: err });
 };
 
 const login = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl);
   try {
     const credentials = new CredentialsDto(req.body);
     const findUser = await ServiceSession.login(credentials);
@@ -19,15 +21,12 @@ const login = async (req, res) => {
     req.session.user = findUser;
     return res.redirect("/products");
   } catch (error) {
-    console.log(
-      "🚀 ~ file: session.routes.js:47 ~ router.post ~ error:",
-      error
-    );
     res.status(500).send({ error: "Error interno" });
   }
 };
 
 const register = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl);
   try {
     const { role, email, password, first_name, last_name, age } = req.body;
     const response = await ServiceSession.register({
@@ -41,68 +40,61 @@ const register = async (req, res) => {
     req.session.user = { ...response };
     return res.redirect("/login");
   } catch (error) {
-    console.log(
-      "🚀 ~ file: session.routes.js:66 ~ router.post ~ error:",
-      error
-    );
     res.status(500).send({ error: "Error interno" });
   }
 };
 
 const cambioContraseña = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl);
   try {
     const { password, email } = req.body;
-    console.log(password);
-    console.log(email);
     const response = ServiceSession.cambioContraseña({ password, email });
-
     if (response?.message) {
       return res.status(401).json(response.message);
     }
     return res.redirect("/login");
   } catch (error) {
-    console.log(
-      "🚀 ~ file: session.routes.js:117 ~ router.post ~ error:",
-      error
-    );
     res.status(500).send({ error: "Error interno" });
   }
 };
 
 const cambiarRol = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl);
   return await ServiceSession.cambiarRol(req.params._id, req.params.role);
 };
 
 const gitHubCallback = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl);
   try {
-    console.log(
-      `****** USANBO ENDPOINT de github/callback PARA COMUNICARNOS *****`
-    );
     req.session.user = req.user;
     res.redirect("/profile");
   } catch (error) {
-    console.log("🚀 ~ file: session.routes.js:115 ~ error:", error);
     res.status(500).send({ error: "Error interno" });
   }
 };
 
 const getUsers = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl);
   try {
     return await ServiceSession.getUsers();
   } catch (error) {}
 };
 
 const deleteUsers = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl);
   try {
     return await ServiceSession.deleteUsers();
-  } catch (error) {}
+  } catch (error) {
+    error;
+  }
 };
 
 const deleteUsersById = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl);
   try {
     return await ServiceSession.deleteUserById(req.params.uid);
   } catch (error) {
-    console.log(error);
+    error;
   }
 };
 

@@ -4,6 +4,7 @@ import { ServiceCart } from "../services/CartsServices.js";
 const httpErrors = new HttpResponse();
 
 const getCarts = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl)
   try {
     const response = await ServiceCart.getCarts();
     if (response) {
@@ -16,6 +17,7 @@ const getCarts = async (req, res) => {
 };
 
 const getCartById = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl)
   try {
     const cid = req.params.cid;
     const response = await ServiceCart.getCartById(cid);
@@ -29,6 +31,7 @@ const getCartById = async (req, res) => {
 };
 
 const addCart = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl)
   try {
     const products = req.body;
     const response = await ServiceCart.addCart(products);
@@ -39,6 +42,7 @@ const addCart = async (req, res) => {
 };
 
 const updateCart = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl)
   try {
     const cid = req.params.cid;
     const productoId = req.params.pid;
@@ -51,17 +55,19 @@ const updateCart = async (req, res) => {
 };
 
 const deleteProductInCart = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl)
   try {
     const cid = req.params.cid;
     const productoId = req.params.pid;
-    const response = await ServiceCart.deleteProductInCart(cid, productoId);
-    res.json(response);
+    const response = await ServiceCart.DeleteProductInCart(cid, productoId);
+    res.redirect("/carts/" + cid);
   } catch (error) {
     return httpErrors.Error(res, "Ocurrio un error inesperado");
   }
 };
 
 const addTicket = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl)
   try {
     const cid = req.params.cid;
     const user = req.session.user;
@@ -73,6 +79,7 @@ const addTicket = async (req, res) => {
 };
 
 const vaciarCarrito = async (cid) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl)
   const result = await ServiceCart.vaciarCarrito(cid);
   return result;
 };

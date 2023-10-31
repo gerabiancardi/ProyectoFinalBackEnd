@@ -17,14 +17,9 @@ router.post("/recuperarClave", async (req, res) => {
         </div>
         `,
     });
-    console.log(
-      "🚀 ~ file: email.routes.js:32 ~ router.post ~ result:",
-      result
-    );
     return res.send({ ok: true, message: `email send to ${req.body.email}` });
   } catch (error) {
-    console.log("🚀 ~ file: email.routes.js:36 ~ router.post ~ error:", error);
-  }
+    console.log(error)}
 });
 
 export { router as emailsRouter };

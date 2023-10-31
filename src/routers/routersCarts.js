@@ -13,7 +13,7 @@ router.post("/",[authMdw, handlePolicies(["USER"])], addCart);
 
 router.post("/:cid/products/:pid",[authMdw, handlePolicies(["USER", "PREMIUN"])],updateCart); 
 
-router.delete("/:cid/products/:pid",[authMdw, handlePolicies(["USER"])], deleteProductInCart); 
+router.post("/delete/:cid/products/:pid",[authMdw, handlePolicies(["USER","ADMIN","PREMIUN"])], deleteProductInCart); 
 
 router.get("/:cid/purchase",[authMdw, handlePolicies(["USER"])], addTicket);
 

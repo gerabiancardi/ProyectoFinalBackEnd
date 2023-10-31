@@ -6,6 +6,7 @@ const renderProduct = (req, res) => {
 };
 
 const getPaginateProducts = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl)
   try {
     const { limit, page, sort, ...query } = req.query;
 
@@ -56,38 +57,43 @@ const getPaginateProducts = async (req, res) => {
 };
 
 const getCartById = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl)
   const { id } = req.params;
   try {
     const cart = await ServiceCart.getCartById(id);
     if (!cart) {
       return res.status(404).send("Carrito no encontrado");
     }
-    /*const totalPrice=cart.productos.map((p)=>p.price).reduce((a, b) => a + b, 0)*/
-    res.render("cart", { productos: cart.productos, id });
+    const productos = cart.productos.map(p => ({ ...p.id, quantity: p.quantity }));
+    let totalPrecio = 0;
+    productos.forEach(producto => totalPrecio += producto.price);
+    res.render("cart", { productos, id, totalPrice: totalPrecio || 0 });
   } catch (error) {
-    req.logger.error(`Ocurrio un error en : ${req.originalUrl}`);
+    req.logger.error(`Ocurrió un error en: ${req.originalUrl}`);
     res.status(500).send("Error al obtener el carrito");
   }
 };
 
 const login = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl)
   req.logger.error(`Ocurrio un error en : ${req.originalUrl}`);
   res.render("login");
 };
 
 const olvideClave = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl)
   req.logger.error(`Ocurrio un error en : ${req.originalUrl}`);
   res.render("cambioDeClave");
 };
 
 const register = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl)
   res.render("register");
 };
 
 const getProfile = async (req, res) => {
-  console.log(req.session.user, "REQ.SESSION");
+  req.logger.info("Ejectuando endpoint" + req.originalUrl)
   const user = req.session.user;
-  req.logger.info(`Informacion`);
   res.render("profile", {
     user,
     carrito: {
@@ -98,11 +104,13 @@ const getProfile = async (req, res) => {
 };
 
 const renderUsers = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl)
   const users = await ServiceSession.getUsers();
   res.render("users", { users });
 };
 
 const finalizarCompra = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl)
   const cid = req.params.cid;
   await ServiceCart.vaciarCarrito(cid);
   res.render("compraFinalizada");

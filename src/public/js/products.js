@@ -2,7 +2,6 @@ const socket = io();
 const productsContainer = document.getElementById("products-table-body");
 
 socket.on("products", (products) => {
-  console.log("hola", products);
   const allProductsElements = products.payload
     .map(
       (product) => `

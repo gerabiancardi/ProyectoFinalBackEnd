@@ -7,7 +7,6 @@ const createHashValue = async (val) => {
 
 const isValidPasswd = (psw, encryptedPsw) => {
   const validValue = bcrypt.compareSync(psw, encryptedPsw);
-  console.log(validValue);
   return validValue;
 };
 

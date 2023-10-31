@@ -1,55 +1,102 @@
-<div>
-  <h1 class="title">Lista de Usuarios</h1>
-  <table class="product-list">
-    <tr>
-      <th>Usuario</th>
-      <th>Email</th>
-      <th>Role</th>
-      <th>Modifar_Role</th>
-      <th>Boton_Elminar_Usuario</th>
-    </tr>
+<!DOCTYPE html>
+<html>
 
-    <tbody id="products-table-body">
-      {{#each users}}
-        <tr>
-          <td> {{this.first_name}}</td>
-          <td> {{this.email}} </td>
-          <td> {{this.role}} </td>
-          <td>
-            <div>
-              <form action="/api/user/{{this._id}}" method="post">
-                <br/>
-                <button type="submit">eliminar</button>
-              </form>
-            </div></td>
-            <td>
-            <div>
-              <form action="/api/user/user/{{this._id}}" method="post">
-                <br/>
-                <button type="submit">cambiar a User</button>
-              </form>
-            </div>
-                        <div>
-              <form action="/api/user/premium/{{this._id}}" method="post">
-                <br/>
-                <button type="submit">cambiar a Premium</button>
-              </form>
-            </div>
-                        <div>
-              <form action="/api/user/admin/{{this._id}}" method="post">
-                <br/>
-                <button type="submit">cambiar a Admin</button>
-              </form>
-            </div>
-            </td>
-        </tr>
-      {{/each}}
-    </tbody>
-    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Usuarios</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            padding: 20px;
+            margin: 0;
+        }
 
-  </table>
-</div>
-<style>
-  table, th, td { border: 1px solid; } .title { text-align: center; }
-  .product-list { width: 100%; }
-</style>
+        h1 {
+            text-align: center;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid;
+        }
+
+        .title {
+            text-align: center;
+        }
+
+        .product-list {
+            width: 100%;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1 class="title">Lista de Usuarios</h1>
+        <table class="product-list">
+            <tr>
+                <th>Usuario</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Modificar_Role</th>
+                <th>Boton_Eliminar_Usuario</th>
+            </tr>
+            <tbody id="products-table-body">
+                {{#each users}}
+                <tr>
+                    <td>{{this.first_name}}</td>
+                    <td>{{this.email}}</td>
+                    <td>{{this.role}}</td>
+                    <td>
+                        <div>
+                            <form action="/api/user/{{this._id}}" method="post">
+                                <br />
+                                <button type="submit">eliminar</button>
+                            </form>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <form action="/api/user/user/{{this._id}}" method="post">
+                                <br />
+                                <button type="submit">cambiar a User</button>
+                            </form>
+                        </div>
+                        <div>
+                            <form action="/api/user/premium/{{this._id}}" method="post">
+                                <br />
+                                <button type="submit">cambiar a Premium</button>
+                            </form>
+                        </div>
+                        <div>
+                            <form action="/api/user/admin/{{this._id}}" method="post">
+                                <br />
+                                <button type="submit">cambiar a Admin</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

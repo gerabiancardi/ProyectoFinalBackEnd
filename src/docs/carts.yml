@@ -1,28 +1,105 @@
+openapi: 3.0.0
+info:
+  title: Carts API
+  version: 1.0.0
+  description: API for managing carts and purchases
+servers:
+  - url: http://localhost:3000 
+    description: Development server
 paths:
-  /api/carts/:
+  /:
     get:
-      summary: get all carts
-      tags: 
-        - Carts
+      summary: Get all carts
+      tags:
+        - carts
+      security:
+        - PUBLIC: []
       responses:
-        "200":
-          description: get carts from db 
-        "500":
-          description: error server side 
-  /api/carts/{id}:
+        '200':
+          description: Successful operation
+  /{cid}:
     get:
-      summary: get cart by id
-      tags: 
-        - Carts
+      summary: Get a cart by ID
+      tags:
+        - carts
       parameters:
-        - name: id
-          in: path
-          description: Cart ID
+        - in: path
+          name: cid
           required: true
           schema:
             type: string
+      security:
+        - PUBLIC: []
       responses:
-        "200":
-          description: get cart by id from db 
-        "500":
-          description: error server side 
+        '200':
+          description: Successful operation
+    post:
+      summary: Add a cart
+      tags:
+        - carts
+      security:
+        - USER: []
+      responses:
+        '200':
+          description: Successful operation
+  /{cid}/products/{pid}:
+    post:
+      summary: Update a cart
+      tags:
+        - carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+      security:
+        - USER: []
+        - PREMIUN: []
+      responses:
+        '200':
+          description: Successful operation
+  /delete/{cid}/products/{pid}:
+    post:
+      summary: Delete a product from a cart
+      tags:
+        - carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+      security:
+        - USER: []
+        - ADMIN: []
+        - PREMIUN: []
+      responses:
+        '200':
+          description: Successful operation
+  /{cid}/purchase:
+    get:
+      summary: Add a ticket for a purchase
+      tags:
+        - carts
+      parameters:
+        - in: path
+          name: cid
+          required: true
+          schema:
+            type: string
+      security:
+        - USER: []
+      responses:
+        '200':
+          description: Successful operation

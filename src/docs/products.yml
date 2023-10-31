@@ -1,29 +1,79 @@
+openapi: 3.0.0
+info:
+  title: Products API
+  version: 1.0.0
+  description: API for managing products
+servers:
+  - url: http://localhost:3000 
+    description: Development server
 paths:
-  /api/products/:
+  /:
     get:
-      summary: get all products
-      tags: 
-        - Products
+      summary: Get all products
+      tags:
+        - products
+      security:
+        - PUBLIC: []
       responses:
-        "200":
-          description: get paginate products from db 
-        "500":
-          description: error server side 
-  /api/products/{id}:
+        '200':
+          description: Successful operation
+  /{pid}:
     get:
-      summary: get product by id
-      tags: 
-        - Products
+      summary: Get a product by ID
+      tags:
+        - products
       parameters:
-        - name: id
-          in: path
-          description: Product ID
+        - in: path
+          name: pid
           required: true
           schema:
             type: string
+      security:
+        - PUBLIC: []
       responses:
-        "200":
-          description: get product by id from db 
-        "500":
-          description: error server side 
+        '200':
+          description: Successful operation
+    put:
+      summary: Update a product
+      tags:
+        - products
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+      security:
+        - ADMIN: []
+        - PREMIUM: []
+      responses:
+        '200':
+          description: Successful operation
+    post:
+      summary: Delete a product
+      tags:
+        - products
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+      security:
+        - ADMIN: []
+        - PREMIUM: []
+      responses:
+        '200':
+          description: Successful operation
+  /add:
+    post:
+      summary: Add a product
+      tags:
+        - products
+      security:
+        - ADMIN: []
+        - PREMIUM: []
+      responses:
+        '200':
+          description: Successful operation
 

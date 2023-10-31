@@ -5,6 +5,7 @@ import { Serviceproduct } from "../services/ProductServices.js";
 const httpErrors = new HttpResponse();
 
 const getPaginateProducts = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl)
   try {
     const { limit, page, sort, ...query } = req.query;
 
@@ -47,6 +48,7 @@ const getPaginateProducts = async (req, res) => {
 };
 
 const getProductById = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl)
   try {
     const pid = req.params.pid;
     const result = await Serviceproduct.getProductById(pid);
@@ -60,21 +62,21 @@ const getProductById = async (req, res) => {
 };
 
 const addProduct = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl)
   try {
     const product = req.body;
-    console.log(product);
     if (Object.values(product).length == 0) {
       return httpErrors.BadRequest(res, "Debe completar todos los campos");
     }
     const response = await Serviceproduct.addProduct(product);
     return res.status(201).json(response);
   } catch (error) {
-    console.log(error);
     return httpErrors.Error(res, "Ocurrio un error inesperado");
   }
 };
 
 const updateProduct = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl)
   try {
     const pid = parseInt(req.params.pid);
     const props = req.body;
@@ -89,6 +91,7 @@ const updateProduct = async (req, res) => {
 };
 
 const deleteProduct = async (req, res) => {
+  req.logger.info("Ejectuando endpoint" + req.originalUrl)
   try {
     const pid = req.params.pid;
     const response = await Serviceproduct.deleteProduct(pid);
@@ -97,7 +100,6 @@ const deleteProduct = async (req, res) => {
     }
     return httpErrors.NotFound(res, "Producto no encontrado");
   } catch (error) {
-    console.log(error);
     return httpErrors.Error(res, "Ocurrio un error inesperado");
   }
 };

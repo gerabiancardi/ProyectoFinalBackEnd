@@ -4,7 +4,6 @@ import { productDao } from "../dao/ProductDao.js";
 class CartSerivce {
   addCart = async (product) => {
     const newCart = await cartDao.addCart(product);
-    console.log(newCart, "NEWCART");
     return newCart;
   };
 
@@ -35,28 +34,30 @@ class CartSerivce {
 
     if (!existProductInCart) {
       await cartDao.updateCartWhenProductIsNotInCart(cid, productId);
-      return this.getCartById(cid);
+      await productDao.updateProductStock(productId);
+      return cart;
     }
     await cartDao.updateCartWhenProductIsInCart(cid, productId);
-    return this.getCartById(cid);
+    await productDao.updateProductStock(productId);
+    return cart;
   };
 
   DeleteProductInCart = async (cid, productId) => {
-    const cart = await cartDao.findById(cid);
+    const cart = await cartDao.getCartById(cid);
 
     if (!cart) {
       throw new Error("No existe el carrito");
     }
 
-    const product = await cartDao.findById(productId);
+    const product = await productDao.getProductById(productId);
 
     if (!product) {
       throw new Error("No existe el producto");
     }
 
-    const existProductInCart = cart.productos.some(
-      (productCart) => productCart.id?.toString() === product.id
-    );
+    const existProductInCart = cart.productos.some((productCart) => {
+      return productCart.id._id?.toString() == product._id;
+    });
 
     if (!existProductInCart) {
       throw new Error("No existe el producto en el carrito");
@@ -67,7 +68,6 @@ class CartSerivce {
 
   addTicket = async (cid, user) => {
     const cart = await this.getCartById(cid);
-    console.log(cart);
     if (cart.productos.length > 0) {
       let ticketamount = 0;
       let productswhitoutstock = [];

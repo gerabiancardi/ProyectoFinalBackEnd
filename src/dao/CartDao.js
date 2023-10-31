@@ -13,45 +13,45 @@ class CartDao {
   };
 
   getCarts = async () => {
-    const cartsArr = await cartsModel.find({});
-    return cartsArr;
+    try {
+      const cartsArr = await cartsModel.find({});
+      return cartsArr;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   getCartById = async (id) => {
     try {
-      const cartDetail = await cartsModel.findById(id).lean();
-      let productos = [];
-      for (let index = 0; index < cartDetail.productos.length; index++) {
-        let producto = await productsModel.findById(
-          cartDetail.productos[index].id
-        );
-        console.log(cartDetail.productos[index].id)
-        if (producto) {
-          productos.push({
-            ...producto,
-            quantity: cartDetail.productos[index].quantity,
-          });
-        }
-      }
-      return { ...cartDetail, productos };
+      const cartDetail = await cartsModel
+        .findById(id)
+        .populate("productos.id")
+        .lean();
+      JSON.stringify(cartDetail);
+      return cartDetail;
     } catch (error) {
       console.log(error);
     }
   };
 
   updateCartWhenProductIsNotInCart = async (cid, productId) => {
-    return await cartsModel.updateOne(
-      { _id: cid },
-      {
-        $push: {
-          productos: { id: productId, quantity: 1 },
-        },
-      }
-    );
+    try {
+      return await cartsModel.updateOne(
+        { _id: cid },
+        {
+          $push: {
+            productos: { id: productId, quantity: 1 },
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   updateCartWhenProductIsInCart = async (cid, productId) => {
-    return await cartsModel
+    try {
+      return await cartsModel
       .updateOne(
         {
           _id: cid,
@@ -60,10 +60,14 @@ class CartDao {
         { $inc: { "productos.$.quantity": 1 } }
       )
       .exec();
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   DeleteProductInCart = async (cid, productId) => {
-    return await cartsModel
+    try {
+      return await cartsModel
       .updateOne(
         {
           _id: cid,
@@ -72,25 +76,36 @@ class CartDao {
         { $pull: { productos: { id: productId } } }
       )
       .exec();
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   addTicket = async (amount, email, code) => {
-    const newTicket = await TicketsModel.create({
-      amount,
-      pucharser: email,
-      code,
-    });
-    return newTicket;
+    try {
+      const newTicket = await TicketsModel.create({
+        amount,
+        pucharser: email,
+        code,
+      });
+      return newTicket;
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   vaciarCarrito = async (cid) => {
-    const result = await cartsModel
+    try {
+      const result = await cartsModel
       .updateOne({ _id: cid }, { $set: { productos: [] } })
       .exec();
     if (result.nModified > 0) {
       return "Todos los productos se han eliminado del carrito.";
     } else {
       return "Ningún producto se ha eliminado.";
+    }
+    } catch (error) {
+      console.log(error)
     }
   };
 }
